@@ -6,26 +6,24 @@ import { SearchContext } from "../Pages/Home";
 import "../Styles/Fetch.css";
 
 function Fetch() {
-  const { setApiData, apiError, setApiError } = useContext(SearchContext);
+  const { userInput, regionChoice, setApiData, apiError, setApiError } = useContext(SearchContext);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
 
-    fetch("https://restcountries.com/v3.1/all")
-      .then((response) => {
-        if (!response.ok)
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:3500/search-city?query=${userInput}`);
+        if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
-
-        return response.json();
-      })
-      .then((data) => {
+        }
+        const data = await response.json();
         if (isMounted) {
           setApiData(data);
           setLoading(false);
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         if (isMounted) {
           if (error.message === "Failed to fetch") {
             setApiError("No internet connection. Please check your network.");
@@ -34,12 +32,15 @@ function Fetch() {
           }
           setLoading(false);
         }
-      });
+      }
+    };
+
+    fetchData();
 
     return () => {
       isMounted = false;
     };
-  }, [setApiData, setApiError]);
+  }, [userInput, regionChoice, setApiData, setApiError]);
 
   return (
     <section className="main-body-section">

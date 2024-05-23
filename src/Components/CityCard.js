@@ -1,32 +1,34 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function CountryCard(props) {
+function CityCard(props) {
   return (
     <Link to={`/${props.name}`} title={props.name}>
-      <div className="country-card">
+      <div className="city-card">
         <div className="ctd-img">
-          <img src={props.flag} alt={`${props.name} Flag`} />
+          {/* Add city image if available */}
+          <img src={props.image} alt={`${props.name} Image`} />
         </div>
 
         <div className="ctd-info">
           <p className="ctd-title">{props.name}</p>
           <p className="ctd-desc">
             <strong>Population: </strong>
-            {props.population ? (props.population).toLocaleString() : <span>--</span>}
+            {props.population ? props.population.toLocaleString() : <span>--</span>}
           </p>
           <p className="ctd-desc">
             <strong>Region: </strong>
             {props.region ? props.region : <span>--</span>}
           </p>
           <p className="ctd-desc">
-            <strong>Capital: </strong>
-            {props.capital ? props.capital : <span>--</span>}
+            <strong>Country: </strong>
+            {props.country ? props.country : <span>--</span>}
           </p>
+          {/* Add more relevant city data properties here */}
         </div>
       </div>
     </Link>
   );
 }
 
-export default CountryCard;
+export default CityCard;
